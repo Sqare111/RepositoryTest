@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+@model WebApplication19.Models.Appointment
+@{
+    ViewBag.Title = "Apply";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="div1">
+    <p>
+        @Html.DropDownListFor(Model => Model.Employee.Specialty, new SelectList(ViewBag.categories as System.Collections.IEnumerable, "ID", "Name"),
+
+                "Select a categorie", new { id = "dd_Country" })
+    </p>
+    <p>
+        @Html.DropDownListFor(Model => Model.Employee, new SelectList(Enumerable.Empty<SelectListItem>(), "id", "Name"),
+                "Select a subcategorie", new { id = "ddState" })
+    </p>
+    <div id="div1" style="display: none;">
+
+        @foreach (var item3 in ViewBag.Authors)
+        {
+            
+            for (DateTime day = Convert.ToDateTime(Convert.ToString(item3.Time_begin)); day <= Convert.ToDateTime(Convert.ToString(item3.Time_end)); day = day.AddMinutes(20))
+            {<div class="div-time">
+
+                    @Html.ActionLink(Convert.ToString(string.Format("{0: H:mm}", day)), "AddService", "User", new
+                {
+                    day = day
+                }, null)
+                </div>
+            }
+        }
+        </div>
+    <p>
+        @Html.DropDownListFor(Model => Model.Service, new SelectList(Enumerable.Empty<SelectListItem>(), "id", "Name"),
+                "Select a subcategorie", new { id = "ddState2" })
+    </p>
+    <p>
+        @Html.DropDownListFor(Model => Model.Clinic, new SelectList(Enumerable.Empty<SelectListItem>(), "id", "Name"),
+                "Select a subcategorie", new { id = "ddState3" })
+    </p>
+    <div  >
+
+        @*@foreach (var item3 in Model.Employee.EmployeeOfClinic)
+                {
+                   for (DateTime day = Convert.ToDateTime(Convert.ToString(item3.Time_begin)); day <= Convert.ToDateTime(Convert.ToString(item3.Time_end)); day = day.AddMinutes(20))
+                        {<div class="div-time">
+
+                                @Html.ActionLink(Convert.ToString(string.Format("{0: H:mm}", day)), "AddService", "User", new
+                            {
+                                day = day
+                            }, null)
+                            </div>
+                        }
+
+
+                    }
+            }*@
+
+    </div>
+</div>
+
+<script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dd_Country").change(function () {
+            var categoryId = $(this).val();
+            $.getJSON("../Home/LoadSubCatBycategoryId", { categoryId: categoryId },
+                function (classesData) {
+                    var select = $("#ddState");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "Select a subcategorie"
+                    }));
+                    $.each(classesData, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Value,
+                            text: itemData.Text
+                        }));
+                    });
+                });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dd_Country").change(function () {
+            var categoryId = $(this).val();
+            $.getJSON("../Home/LoadSubCatBycategoryId2", { categoryId: categoryId },
+                function (classesData) {
+                    var select = $("#ddState2");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "Select a subcategorie"
+                    }));
+                    $.each(classesData, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Value,
+                            text: itemData.Text
+                        }));
+                    });
+                });
+        });
+    });
+</script>
+<script  type="text/javascript">
+    $("#ddState").on('change', function () {
+        document.getElementById("div1").style.display = "block";
+
+    });  
+</script>
+<script type="text/javascript">
+    $("#ddState").on('change', function () {
+
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#ddState").change(function () {
+            var categoryId = $(this).val();
+            $.getJSON("../Home/LoadSubCatBycategoryId3", { categoryId: categoryId },
+                function (classesData) {
+                    var select = $("#ddState3");
+                    select.empty();
+                    select.append($('<option/>', {
+                        value: 0,
+                        text: "Select a subcategorie"
+                    }));
+                    $.each(classesData, function (index, itemData) {
+                        select.append($('<option/>', {
+                            value: itemData.Value,
+                            text: itemData.Text
+                        }));
+                    });
+                });
+        });
+    });
+</script>
